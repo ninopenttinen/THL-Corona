@@ -1,12 +1,15 @@
 import requests
-# Käytetty lähde on osoitteesta https://github.com/HS-Datadesk/koronavirus-avoindata
-# koska THL:n rajapinta palauttaa koodin 403 toistaiseksi tuntemattomasta syystä. Datan pitäisi olla käytännössä sama.
+from datetime import datetime, date, time
+# Used source is from https://github.com/HS-Datadesk/koronavirus-avoindata
 url = 'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/processedThlData'
 
-# tuo data THL:n rajapinnasta JSON-oliona
-r = requests.get(url)
-print(r.json())
-# pura JSON ja erittele haluttu data listan tai olion alkioihin
-# tulosta lista visuaalisesti esim matplotlibilla
-# valinnaisesti kysy käyttäjältä haluttu shp tai paikkakunta
-# tulosta CSV-tiedostoon?
+# import data from the API as JSON
+response = requests.get(url).json()
+for date in range(100,250):
+    print(response["confirmed"]["Ahvenanmaa"][date])
+
+# parse JSON and divide data into a list or dictionary
+# print list or dictionary visually with matplotlib
+# optionally ask the user for the healthcare district
+# optionally ask the user for a specific time period
+# optionally export to a CSV
