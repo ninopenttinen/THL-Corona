@@ -1,13 +1,4 @@
-import requests
-import matplotlib.pyplot as plt
-
-healthCareDistrict = 'Ahvenanmaa'
-interval = '1010-1103'
-
-url = 'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/processedThlData'
-response = requests.get(url).json()
-
-def printInfectionRates(healthCareDistrict, interval):
+def printInfectionRates(healthCareDistrict, interval, response):
     
     startDate = interval[0:4]
     endDate = interval[5:10]
@@ -26,13 +17,11 @@ def printInfectionRates(healthCareDistrict, interval):
 
     infectionsTotal = sum(infections)
     print(f"Total amount of infections in {healthCareDistrict}: {infectionsTotal}")
+    """
     plt.plot(dates, infections)
     plt.ylabel('infections')
     plt.xlabel('date')
     plt.xticks([dates[0], dates[-1]], visible=True, rotation="horizontal")
     plt.show()
-
-
-# test
-printInfectionRates(healthCareDistrict, interval)
+    """
 
