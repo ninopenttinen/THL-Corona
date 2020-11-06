@@ -35,3 +35,4 @@ def printInfectionRates(healthCareDistrict, interval):
 
 # test
 printInfectionRates(healthCareDistrict, interval)
+
