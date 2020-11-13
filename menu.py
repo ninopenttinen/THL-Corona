@@ -5,13 +5,16 @@ import numpy as np
 from datetime import datetime
 from hospital_cases import printHospitalCases
 from infection_rates import printInfectionRates
+from tested_cases import printMikkoMasterShit
 import json
 import os
 
 url = 'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/processedThlData'
 url2 = 'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaHospitalData'
+url3 = 'https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/hcdTestData'
 response = {}
 response2 = {}
+response3 = {}
 
 if(os.path.exists('infection_rates.json') == False):
     i = open('infection_rates.json','x')
@@ -21,12 +24,18 @@ if(os.path.exists('hospital_cases.json') == False):
     h = open('hospital_cases.json','x')
     h.close()
 
+if(os.path.exists('tested_cases.json') == False):
+    t = open('tested_cases.json','x')
+    t.close()
+
 # haetaan json-data tiedostosta jos tiedosto on vähintään päivän vanha
 today = datetime.today()
 modified_date_i = datetime.fromtimestamp(os.path.getmtime('infection_rates.json'))
 modified_date_h = datetime.fromtimestamp(os.path.getmtime('hospital_cases.json'))
+modified_date_t = datetime.fromtimestamp(os.path.getmtime('tested_cases.json'))
 duration_i = today - modified_date_i
 duration_h = today - modified_date_h
+duration_t = today - modified_date_t
 
 # tallennetaan response json-tiedostoon, josta data on helpompi lukea
 if duration_i.days > 1:
@@ -59,7 +68,20 @@ else:
         h.close()
     print("Hospital cases data loaded from file successfully")
 
-
+if duration_t.days > 1:
+    try:
+        response3 = requests.get(url3).json()
+        with open('tested_cases.json','w') as t:
+            json.dump(response3, t)
+            t.close()
+        print("Tested cases data loaded from server successfully")
+    except:
+        print("Server not accessible")
+else:
+    with open('tested_cases.json','r') as t:
+        response3 = json.load(t)
+        t.close()
+    print("Tested cases data loaded from file successfully")
 
 print("\n    ****************************************\n\
     | Tervetuloa Tamkin koronasovellukseen |\n\
