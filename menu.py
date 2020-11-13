@@ -71,67 +71,68 @@ print("\n    ****************************************\n\
     | Tervetuloa Tamkin koronasovellukseen |\n\
     ****************************************\n")
 
-select = 0
+while True:
+    select = 0
 
-#char?+
-while int(select) != 1 and int(select) != 2:
-    print("1. Valitse tapauksen sairaanhoitopiireittäin")
-    print("2. Valitse tapaukset sairaaloittain")
-    select  = input()
+    #char?+
+    while int(select) != 1 and int(select) != 2:
+        print("1. Valitse tapauksen sairaanhoitopiireittäin")
+        print("2. Valitse tapaukset sairaaloittain")
+        select  = input()
 
-#ilman f ei voi upottaa parametrejä / f string
+    #ilman f ei voi upottaa parametrejä / f string
 
-nameOfDistrict=[]
+    nameOfDistrict=[]
 
-if int(select) == 1:
-    for x in response['confirmed']:
-        nameOfDistrict.append(x)
-        print(f"{x} ")
+    if int(select) == 1:
+        for x in response['confirmed']:
+            nameOfDistrict.append(x)
+            print(f"{x} ")
 
-    healthCareDistrict = input("Syötä haluamasi sairaanhoitopiiri: ")
+        healthCareDistrict = input("Syötä haluamasi sairaanhoitopiiri: ")
 
-    select2 = 0
-    while int(select2) != 1 and int(select2) != 2:
-        print("1. Näytä koko aikaväli ")
-        print("2. Valitse aikaväli ")
-        select2 = input()
+        select2 = 0
+        while int(select2) != 1 and int(select2) != 2:
+            print("1. Näytä koko aikaväli ")
+            print("2. Valitse aikaväli ")
+            select2 = input()
 
-    if int(select2) == 1:
-        printInfectionRates(str(healthCareDistrict), "", response)
+        if int(select2) == 1:
+            printInfectionRates(str(healthCareDistrict), "", response)
 
-    elif int(select2) == 2:
-        timeInterval = input("Valitse aikaväli muodossa KKPP-KKPP: ")
-        printInfectionRates(str(healthCareDistrict), timeInterval, response)
+        elif int(select2) == 2:
+            timeInterval = input("Valitse aikaväli muodossa KKPP-KKPP: ")
+            printInfectionRates(str(healthCareDistrict), timeInterval, response)
+            
+
+    elif int(select) == 2:
+
+        nameOfHospital=[]
+
+        for hospitalised in response2['hospitalised']:
+            if(hospitalised['area'] not in nameOfHospital):  #not in
+                nameOfHospital.append(hospitalised['area'])
+            else:
+                continue
+
+        print(nameOfHospital)    
+
+        healthCareUnit = input("Syötä haluamasi sairaala: ")
+
+        if(healthCareUnit in nameOfHospital):
+            print(healthCareUnit,"ok")
         
+        select2 = 0
+        while int(select2) != 1 and int(select2) != 2:
+            print("1. Näytä koko aikaväli ")
+            print("2. Valitse aikaväli ")
+            select2 = input()
 
-elif int(select) == 2:
-
-    nameOfHospital=[]
-
-    for hospitalised in response2['hospitalised']:
-        if(hospitalised['area'] not in nameOfHospital):  #not in
-            nameOfHospital.append(hospitalised['area'])
-        else:
-            continue
-
-    print(nameOfHospital)    
-
-    healthCareUnit = input("Syötä haluamasi sairaala: ")
-
-    if(healthCareUnit in nameOfHospital):
-        print(healthCareUnit,"ok")
-    
-    select2 = 0
-    while int(select2) != 1 and int(select2) != 2:
-        print("1. Näytä koko aikaväli ")
-        print("2. Valitse aikaväli ")
-        select2 = input()
-
-    if int(select2) == 1:
-        printHospitalCases(str(healthCareUnit), "", response2)
+        if int(select2) == 1:
+            printHospitalCases(str(healthCareUnit), "", response2)
 
 
-    elif int(select2) == 2:
-        timeInterval2 = input("Valitse aikaväli muodossa KKPP-KKPP: ")
-        printHospitalCases(str(healthCareUnit), timeInterval2, response2)
+        elif int(select2) == 2:
+            timeInterval2 = input("Valitse aikaväli muodossa KKPP-KKPP: ")
+            printHospitalCases(str(healthCareUnit), timeInterval2, response2)
 
