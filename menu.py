@@ -28,9 +28,13 @@ modified_date_h = datetime.fromtimestamp(os.path.getmtime('hospital_cases.json')
 duration_i = today - modified_date_i
 duration_h = today - modified_date_h
 
+# tallennetaan response json-tiedostoon, josta data on helpompi lukea
 if duration_i.days > 1:
     try:
         response = requests.get(url).json() # requests muokkaa jsonin suoraan python objectiksi
+        with open('infection_rates.json','w') as i:
+            json.dump(response, i)
+            i.close()
         print("Infection rates data loaded from server successfully")
     except:
         print("Server not accessible")
@@ -38,10 +42,14 @@ else:
     with open('infection_rates.json','r') as i:
         response = json.load(i)
         i.close()
+    print("Infection rates data loaded from file successfully")
 
 if duration_h.days > 1:
     try:
         response2 = requests.get(url2).json()
+        with open('hospital_cases.json','w') as h:
+            json.dump(response2, h)
+            h.close()
         print("Hospital cases data loaded from server successfully")
     except:
         print("Server not accessible")
@@ -49,23 +57,9 @@ else:
     with open('hospital_cases.json','r') as h:
         response2 = json.load(h)
         h.close()
+    print("Hospital cases data loaded from file successfully")
 
-# tallennetaan response json-tiedostoon, josta data on helpompi lukea
-try:
-    with open('infection_rates.json','w') as i:
-        json.dump(response, i)
-        i.close()
-        print("Infection rates data loaded from file successfully")
-except FileNotFoundError:
-    print("File not accessible")
 
-try:
-    with open('hospital_cases.json','w') as h:
-        json.dump(response2, h)
-        h.close()
-        print("Hospital cases data loaded from file successfully")
-except FileNotFoundError:
-    print("File not accessible")
 
 print("\n    ****************************************\n\
     | Tervetuloa Tamkin koronasovellukseen |\n\
