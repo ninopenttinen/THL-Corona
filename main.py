@@ -1,3 +1,5 @@
+# DEPRECATED AND MOVED TO HOSPITAL_CASES.PY
+
 # dependencies
 import requests
 import matplotlib.pyplot as plt
